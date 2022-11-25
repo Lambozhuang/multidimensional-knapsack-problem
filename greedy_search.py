@@ -1,5 +1,5 @@
 from typing import List
-from common import Item, Bag, get_total_profit
+from common import Item, Bag, get_total_profit_of_items
 
 
 input_items = [(1, 12), (6, 38), (3, 18), (7, 39), (3, 14), (8, 27), (8, 24), (7, 8)]
@@ -24,4 +24,4 @@ for item in items:
             bag.decrese_capacity(item.weight)
             break
 
-print(get_total_profit(items=items))
+print(get_total_profit_of_items(items=items))

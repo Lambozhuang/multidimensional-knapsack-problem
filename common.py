@@ -24,9 +24,18 @@ class Bag:
             exit()
         self.capacity_left -= amount
 
-def get_total_profit(items: List[Item]):
+    def reset_capacity(self):
+        self.capacity_left = self.capacity
+
+def get_total_profit_of_items(items: List[Item]):
     total_profit = 0
     for item in items:
         if item.bag != -1:
             total_profit += item.value
+    return total_profit
+
+def get_total_profit(list_of_profit: List[int]):
+    total_profit = 0
+    for profit in list_of_profit:
+        total_profit += profit
     return total_profit
