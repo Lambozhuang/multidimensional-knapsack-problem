@@ -12,8 +12,9 @@ def greedy_search(data: Tuple[List[int], List[int], List[int]]) -> int:
     for item in items:
         for bag in bags:
             if bag.capacity_left >= item.weight:
-                item.bag = bag.id
-                bag.decrese_capacity(item.weight)
+                bag.add_item(item)
                 break
-
+    
+    print("Greedy search done.")
+    print()
     return util.get_total_profit_of_items(items)
