@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Tuple
+import random
 
 
 class Item:
@@ -12,11 +13,17 @@ class Item:
         self.benefit = self.value / self.weight
         self.bag = -1
 
+    def __repr__(self):
+        return '{' + str(self.id) + ', ' + str(self.benefit) + '}'
+
 class Bag:
     def __init__(self, id, capacity) -> None:
         self.id = id
         self.capacity = capacity
         self.capacity_left = capacity
+
+    def __repr__(self):
+        return '{' + str(self.id) + ', ' + str(self.capacity) + '}'
 
     def decrese_capacity(self, amount: int):
         if self.capacity_left < amount:
@@ -27,15 +34,4 @@ class Bag:
     def reset_capacity(self):
         self.capacity_left = self.capacity
 
-def get_total_profit_of_items(items: List[Item]):
-    total_profit = 0
-    for item in items:
-        if item.bag != -1:
-            total_profit += item.value
-    return total_profit
 
-def get_total_profit(list_of_profit: List[int]):
-    total_profit = 0
-    for profit in list_of_profit:
-        total_profit += profit
-    return total_profit
