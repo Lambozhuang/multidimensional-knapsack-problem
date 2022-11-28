@@ -43,7 +43,7 @@ def get_total_profit_of_bags(bags: List[Bag]):
             total_profit += item.value
     return total_profit
 
-def update_item_list(bags: List[Bag], items: List[Item]):
+def sync(bags: List[Bag], items: List[Item]):
     for item in items:
         item.bag = -1
     for bag in bags:

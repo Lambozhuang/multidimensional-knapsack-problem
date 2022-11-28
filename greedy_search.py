@@ -2,6 +2,7 @@ from typing import List, Tuple
 import util
 
 
+# data: ([Item.value], [Item.weight], [Bag.capacity])
 def greedy_search(data: Tuple[List[int], List[int], List[int]]) -> int:
 
     (items, bags) = util.process_data(data)
@@ -18,3 +19,4 @@ def greedy_search(data: Tuple[List[int], List[int], List[int]]) -> int:
     print("Greedy search done.")
     print()
     return util.get_total_profit_of_items(items)
+

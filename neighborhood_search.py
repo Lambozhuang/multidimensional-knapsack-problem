@@ -11,47 +11,35 @@ def neighborhood_search(data: Tuple[List[int], List[int], List[int]]):
     items.sort(key=lambda x: x.benefit, reverse=True)
     bags.sort(key=lambda x: x.capacity, reverse=False)
 
-    best_solution: List[int] = []
-    best_total_profit = 0
-
-    # Get the first solution with greedy search
+    # Greedy search
     for item in items:
         for bag in bags:
             if bag.capacity_left >= item.weight:
                 bag.add_item(item)
                 break
 
+    util.sync(bags, items)
     best_solution = [item.bag for item in items]
     best_total_profit = util.get_total_profit_of_bags(bags)
-    # print(best_solution)
-    # print(best_total_profit)
+    best_bags = copy.deepcopy(bags)
+    best_items = copy.deepcopy(items)
 
     # Neighborhood search
     local_optima_flag = False
     while not local_optima_flag:
-
         continue_flag = False
-        # util.reset_capacity(bags)
         item_to_change = util.get_best_leftover(items)
-
         if item_to_change == None:
-            print("Neighborhood search: No item leftover. Best solution has been found.")
-            # print(f"solution: {best_solution}")
-            # print(f"profit: {best_total_profit}")
+            print("Neighborhood search: No item leftover. \
+                Best solution has been found.")
             return best_total_profit
-
-        # random.shuffle(bags)
 
         last_bags = copy.deepcopy(bags)
         last_items = copy.deepcopy(items)
-        util.update_item_list(bags, items)
-
         for i in range(len(bags)):
             bag = bags[i]
             next_bag = bags[0 if i == len(bags) - 1 else i + 1]
-
             rotate = False       
-
             # Select two items in two bags to rotate
             for item_1 in bag.items:
                 if rotate:
@@ -68,39 +56,42 @@ def neighborhood_search(data: Tuple[List[int], List[int], List[int]]):
                         bag.remove_item(item_1)
                         bag.add_item(item_to_change)
                         item_to_change = temp_item
-                        util.update_item_list(bags, items)
+
+            util.sync(bags, items)
             for item in items:
                 if item.bag == -1:
                     for bag in bags:
                         if bag.capacity_left >= item.weight:
                             bag.add_item(item)
                             break
-            
+
+            util.sync(bags, items)
             current_solution = [item.bag for item in items]
             current_total_profit = util.get_total_profit_of_bags(bags)
             print(f"i: {i}", end=" ")
             print(f"rotate: {rotate}", end=" ")
             print(f"current_total_profit: {current_total_profit}")
-            # print(f"current_solution: {current_solution}")
 
+            # Update best solution
             if current_total_profit > best_total_profit:
-                best_total_profit = current_total_profit
                 best_solution = current_solution
+                best_total_profit = current_total_profit
+                best_bags = copy.deepcopy(bags)
+                best_items = copy.deepcopy(items)
                 print(f"update best_total_profit: {best_total_profit}")
-                better_bags = copy.deepcopy(bags)
-                better_items = copy.deepcopy(items)
                 continue_flag = True
 
+            # Reset bags and items
             bags = copy.deepcopy(last_bags)
             items = copy.deepcopy(last_items)
-            util.update_item_list(bags, items)
+            util.sync(bags, items)
             item_to_change = util.get_best_leftover(items)
 
-        util.update_item_list(bags, items)
         print(f"continue: {continue_flag}")
+        # Enter next neighborhood starting point
         if continue_flag:
-            bags = copy.deepcopy(better_bags)
-            items = copy.deepcopy(better_items)
+            bags = copy.deepcopy(best_bags)
+            items = copy.deepcopy(best_items)
         else:
             local_optima_flag = True
     print("Neighborhood search done.")
