@@ -1,1 +1,1 @@
-## multidimensional_knapsack_problem
+## multidimensional-knapsack-problem
